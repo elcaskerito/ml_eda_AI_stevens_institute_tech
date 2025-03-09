@@ -1,0 +1,50 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import LabelEncoder
+
+# Assuming data is loaded into a pandas DataFrame `df`
+# df = pd.read_csv('breast_cancer_data.csv')  # Example loading step
+
+# Define the features (X) and labels (y)
+X = df.iloc[:, 1:10].values  # Features (columns 1-9)
+y = df.iloc[:, -1].values    # Target (column 10: diagnosis)
+
+# Step 1: Data Splitting
+# Test set includes every 6th row (6, 12, 18, 24, 30)
+test_indices = range(5, len(df), 6)  # 6, 12, 18, 24, 30, ...
+train_indices = [i for i in range(len(df)) if i not in test_indices]
+
+X_train = X[train_indices]
+y_train = y[train_indices]
+X_test = X[test_indices]
+y_test = y[test_indices]
+
+# Step 2: KNN Classification (Euclidean Distance, Unweighted and Weighted)
+
+# Initialize accuracy dictionary
+accuracies = {}
+
+# K values to test
+K_values = [1, 2, 3]
+
+# Unweighted KNN (using `weights='uniform'`)
+for K in K_values:
+    knn = KNeighborsClassifier(n_neighbors=K, weights='uniform')
+    knn.fit(X_train, y_train)
+    y_pred = knn.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    accuracies[f'K={K} (Unweighted)'] = accuracy
+
+# Weighted KNN (using `weights='distance'`)
+for K in K_values:
+    knn = KNeighborsClassifier(n_neighbors=K, weights='distance')
+    knn.fit(X_train, y_train)
+    y_pred = knn.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    accuracies[f'K={K} (Weighted)'] = accuracy
+
+# Step 3: Output the accuracies
+for key, value in accuracies.items():
+    print(f"{key}: {value:.4f}")
