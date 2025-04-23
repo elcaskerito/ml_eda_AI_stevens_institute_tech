@@ -1,0 +1,6 @@
+FILE DESCRIPTION :
+
+inside the zipped file there are three folder :
+- first folder named final_project contain our dataset which is the CSV file and jupyter note book code that goes with the dataset.
+- the second folder named EAD contain an excel (.xls) files in which I did some basic data analysis
+- the third folder named presentation, contain our presentation paper file in pdf.
